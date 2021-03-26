@@ -55,7 +55,7 @@ class ArticleController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id) {
-        return Article::find($id);
+        return Article::findOrFail($id);
     }
 
     /**
@@ -63,7 +63,7 @@ class ArticleController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function showGuest($id) {
-        $article = Article::find($id);
+        $article = Article::findOrFail($id);
         return ($article->status === 1) ? $article : response()->json(['message' => 'Unauthenticated.'], 401);
     }
 
