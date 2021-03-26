@@ -107,6 +107,30 @@ class PermissionsTest extends TestCase
         );
     }
 
+     /**
+      * @test
+      */
+    public function guestsCanViewPublishedArticles() {
+        $this->assertEquals($this->articleWriter1->fresh()->status, 1);
+        $response = $this->json('GET', "api/guest/articles/{$this->articleWriter1->id}");
+
+        $response->assertStatus(200)->assertJson(
+            ['id' => $this->articleWriter1->id]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function guestsCannotViewUnpublishedArticles() {
+        $this->assertEquals($this->articleWriter2->fresh()->status, 0);
+        $response = $this->json('GET', "api/guest/articles/{$this->articleWriter2->id}");
+
+        $response->assertStatus(401)->assertExactJson(
+            ['message' => 'Unauthenticated.']
+        );
+    }
+
     /**
      * @test
      */
