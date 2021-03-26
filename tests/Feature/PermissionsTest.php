@@ -115,7 +115,7 @@ class PermissionsTest extends TestCase
         $response = $this->json('GET', "api/guest/articles/{$this->articleWriter1->id}");
 
         $response->assertStatus(200)->assertJson(
-            ['id' => $this->articleWriter1->id]
+            ['data' => ['id' => $this->articleWriter1->id]]
         );
     }
 

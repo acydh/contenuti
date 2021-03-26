@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Http\Requests\Article\Update as UpdateRequest;
 use App\Http\Requests\Article\Create as CreateRequest;
-
+use App\Http\Resources\ArticleResource;
 class ArticleController extends Controller
 {
     /**
@@ -15,12 +15,13 @@ class ArticleController extends Controller
      */
     public function index(Request $request) {
         $categoryId = $request->input('categoryId');
-        return Article::with(['author', 'category'])->when(
+        $articles   = Article::with(['author', 'category'])->when(
             $categoryId,
             function ($query, $categoryId) {
                 return $query->where('categoryId', $categoryId);
             }
         )->paginate();
+        return ArticleResource::collection($articles);
     }
 
     /**
@@ -30,12 +31,13 @@ class ArticleController extends Controller
     public function indexGuest(Request $request) {
         $categoryId = $request->input('categoryId');
 
-        return Article::with(['author', 'category'])->where('status', 1)->when(
+        $articles = Article::with(['author', 'category'])->where('status', 1)->when(
             $categoryId,
             function ($query, $categoryId) {
                 return $query->where('categoryId', $categoryId);
             }
         )->paginate();
+        return ArticleResource::collection($articles);
     }
 
     /**
@@ -47,7 +49,7 @@ class ArticleController extends Controller
         $article = Article::make($data);
 
         $article->save();
-        return $article;
+        return new ArticleResource($article);
     }
 
     /**
@@ -55,7 +57,7 @@ class ArticleController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id) {
-        return Article::findOrFail($id);
+        return new ArticleResource(Article::findOrFail($id));
     }
 
     /**
@@ -64,7 +66,7 @@ class ArticleController extends Controller
      */
     public function showGuest($id) {
         $article = Article::findOrFail($id);
-        return ($article->status === 1) ? $article : response()->json(['message' => 'Unauthenticated.'], 401);
+        return ($article->status === 1) ? new ArticleResource($article) : response()->json(['message' => 'Unauthenticated.'], 401);
     }
 
     /**
@@ -87,7 +89,7 @@ class ArticleController extends Controller
 
         $article->save();
 
-        return $article;
+        return new ArticleResource($article);
     }
 
     /**
