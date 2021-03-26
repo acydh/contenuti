@@ -42,21 +42,6 @@ class ArticlePolicy
     }
 
     /**
-     * Determine whether the user can publish the article.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Article  $article
-     * @return mixed
-     */
-    public function publish(User $user, Article $article) {
-        if ($user->isEditor === true) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
      * Determine whether the user can view any models.
      *
      * @param  \App\Models\User  $user
