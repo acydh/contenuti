@@ -7,6 +7,7 @@ use App\Models\Article;
 use App\Http\Requests\Article\Update as UpdateRequest;
 use App\Http\Requests\Article\Create as CreateRequest;
 use App\Http\Resources\ArticleResource;
+use Illuminate\Support\Arr;
 class ArticleController extends Controller
 {
     /**
@@ -15,7 +16,7 @@ class ArticleController extends Controller
      */
     public function index(Request $request) {
         $categoryId = $request->input('categoryId');
-        $articles   = Article::with(['author', 'category'])->when(
+        $articles   = Article::when(
             $categoryId,
             function ($query, $categoryId) {
                 return $query->where('categoryId', $categoryId);
@@ -66,7 +67,12 @@ class ArticleController extends Controller
      */
     public function showGuest($id) {
         $article = Article::findOrFail($id);
-        return ($article->status === 1) ? new ArticleResource($article) : response()->json(['message' => 'Unauthenticated.'], 401);
+
+        if ($article->isPublished === false) {
+            return response()->json(['message' => 'Unauthenticated.'], 401);
+        }
+
+        return new ArticleResource($article);
     }
 
     /**
@@ -77,7 +83,7 @@ class ArticleController extends Controller
     public function update(UpdateRequest $request, $id) {
         $data = $request->validated();
 
-        $isPublishRequest = isset($data['status']);
+        $isPublishRequest = Arr::exists($data, 'status');
 
         $article = Article::findOrFail($id);
 
@@ -92,7 +98,7 @@ class ArticleController extends Controller
         return new ArticleResource($article);
     }
 
-    /**
+    /** §
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
