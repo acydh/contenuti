@@ -17,36 +17,28 @@ class DatabaseSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
-    {
-
+    public function run() {
         // Reset cached roles and permissions
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         // Seed Roles
-
         $editor = Role::create(['name' => 'Editor', 'guard_name' => 'api']);
         $writer = Role::create(['name' => 'Writer', 'guard_name' => 'api']);
 
         // Seed Categories
-
-        Category::factory(3)
-          ->create();
+        Category::factory(3)->create();
 
         // Seed Users and related Articles
+        User::factory(2)->has(Article::factory()->count(1), 'articles')->create()->each(
+            function ($user) {
+                $user->assignRole(Role::findByName('Editor', 'api'));
+            }
+        );
 
-        User::factory(2)
-          ->has(Article::factory()->count(1), 'articles')
-          ->create()
-          ->each(function ($user) {
-              $user->assignRole(Role:: findByName('Editor', 'api'));
-          });
-
-        User::factory(2)
-        ->has(Article::factory()->count(1), 'articles')
-        ->create()
-        ->each(function ($user) {
-            $user->assignRole(Role:: findByName('Writer', 'api'));
-        });
+        User::factory(2)->has(Article::factory()->count(1), 'articles')->create()->each(
+            function ($user) {
+                $user->assignRole(Role::findByName('Writer', 'api'));
+            }
+        );
     }
 }

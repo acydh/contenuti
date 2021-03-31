@@ -12,8 +12,7 @@ class Create extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
-    {
+    public function authorize() {
         return true;
     }
 
@@ -22,20 +21,19 @@ class Create extends FormRequest
      *
      * @return array
      */
-    public function rules()
-    {
+    public function rules() {
         return [
-          'title' => [
-            'required',
-            Rule::unique('articles')
-          ],
-          'abstract' => 'required|string|max:255',
-          'contents' => 'required|string|max:500',
-          'status' => [
-            'nullable',
-            'sometimes',
-            Rule::in(['0', '1'])
-          ]
+            'title'    => [
+                'required',
+                Rule::unique('articles'),
+            ],
+            'abstract' => 'required|string|max:255',
+            'contents' => 'required|string|max:500',
+            'status'   => [
+                'nullable',
+                'sometimes',
+                Rule::in(['0', '1']),
+            ],
         ];
     }
 }
