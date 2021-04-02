@@ -26,7 +26,7 @@ class ArticleController extends Controller
      */
     public function index(Request $request)
     {
-        $articles = Auth::check() ? Article::orderBy("created_at", "desc")->paginate(6) : Article::published();
+        $articles = Auth::check() ? Article::everything() : Article::published();
         return view('home', compact('articles'));
     }
 

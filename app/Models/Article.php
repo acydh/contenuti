@@ -49,4 +49,9 @@ class Article extends Model
     {
         return $query->where('status', 1)->orderBy("created_at", "desc")->paginate(6);
     }
+
+    public function scopeEverything($query)
+    {
+        return $query->orderBy("created_at", "desc")->paginate(6);
+    }
 }
