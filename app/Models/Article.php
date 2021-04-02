@@ -47,6 +47,6 @@ class Article extends Model
 
     public function scopePublished($query)
     {
-        return $query->where('status', 1)->paginate(6);
+        return $query->where('status', 1)->orderBy("created_at", "desc")->paginate(6);
     }
 }

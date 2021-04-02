@@ -9,9 +9,16 @@ use App\Models\Article;
 use App\Http\Requests\Article\Update as UpdateRequest;
 use App\Http\Requests\Article\Create as CreateRequest;
 use Illuminate\Support\Arr;
+use App\Http\Services\ArticleService;
 
 class ArticleController extends Controller
 {
+    protected $service;
+
+    public function __construct()
+    {
+        $this->service = new ArticleService();
+    }
 
     /**
      * @param  \Illuminate\Http\Request  $request
@@ -19,7 +26,7 @@ class ArticleController extends Controller
      */
     public function index(Request $request)
     {
-        $articles = Auth::check() ? Article::paginate(6) : Article::published();
+        $articles = Auth::check() ? Article::orderBy("created_at", "desc")->paginate(6) : Article::published();
         return view('home', compact('articles'));
     }
 

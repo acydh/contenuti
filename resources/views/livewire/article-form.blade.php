@@ -34,6 +34,9 @@
               <option {{ ($category_id === $category->id) ? 'selected' : '' }} value="{{ $category->id }}">{{ $category->name }}</option>
             @endforeach
         </select>
+        @error('category_id')
+          <span class="text-red-500">{{ $message }}</span>
+        @enderror
     </div>
 
 
