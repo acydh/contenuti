@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Article extends Model
 {
     use HasFactory;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -20,6 +22,10 @@ class Article extends Model
         'contents',
         'category_id',
         'status'
+    ];
+
+    protected $appends = [
+      'category_name'
     ];
 
     /**
@@ -45,13 +51,31 @@ class Article extends Model
         return $this->status == 1;
     }
 
-    public function scopePublished($query)
+    public function getCategoryNameAttribute()
     {
-        return $query->where('status', 1)->orderBy("created_at", "desc")->paginate(6);
+        return $this->category->name;
     }
 
-    public function scopeEverything($query)
+    public function scopePublished($query, $category_search)
     {
-        return $query->orderBy("created_at", "desc")->paginate(6);
+        return $query
+          ->join('categories', 'articles.category_id', '=', 'categories.id')
+          ->where('status', 1)
+          ->where("categories.name", "LIKE", "%{$category_search}%")
+          ->select("articles.*", "categories.name")
+          ->orderBy("created_at", "desc")
+          ->paginate(6)
+          ->withQueryString();
+    }
+
+    public function scopeEverything($query, $category_search)
+    {
+        return $query
+          ->join('categories', 'articles.category_id', '=', 'categories.id')
+          ->where("categories.name", "LIKE", "%{$category_search}%")
+          ->select("articles.*", "categories.name")
+          ->orderBy("created_at", "desc")
+          ->paginate(6)
+          ->withQueryString();
     }
 }

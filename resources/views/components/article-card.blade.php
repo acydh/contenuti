@@ -5,6 +5,7 @@
 				<h2 class="text-gray-700 font-semibold text-2xl tracking-wide mb-2">{{ $article->title }}</h2>
 				<p class="text-gray-500 mb-4 text-sm">{{ $article->author->id === optional(Auth::user())->id ? "You" : $article->author->name }} - {{ $article->created_at->diffForHumans() }}</p>
 				<p class="text-gray-500 text-base">{{ $article->abstract }}</p>
+				<p class="text-gray-500 mt-4 text-sm">Category: {{ $article->category_name }}</p>
 			</div>
 			<div class="py-4">
 				<a href="/articles/{{ $article->id }}" class="block tracking-widest uppercase text-center shadow bg-indigo-500 hover:bg-indigo-700 focus:shadow-outline focus:outline-none text-white text-xs py-3 px-10 rounded">Read</a>

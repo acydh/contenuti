@@ -26,7 +26,8 @@ class ArticleController extends Controller
      */
     public function index(Request $request)
     {
-        $articles = Auth::check() ? Article::everything() : Article::published();
+        $category_search = $request->category;
+        $articles = Auth::check() ? Article::everything($category_search) : Article::published($category_search);
         return view('home', compact('articles'));
     }
 
