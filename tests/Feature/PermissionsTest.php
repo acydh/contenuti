@@ -21,7 +21,8 @@ class PermissionsTest extends TestCase
     protected $articleWriter1;
     protected $articleWriter2;
 
-    public function setUp(): void {
+    public function setUp(): void
+    {
         parent::setUp();
 
         /* Setup Roles */
@@ -86,7 +87,8 @@ class PermissionsTest extends TestCase
     /**
      * @test
      */
-    public function guestsCanViewArticleGuestIndex() {
+    public function guestsCanViewArticleGuestIndex()
+    {
         $response = $this->json('GET', 'api/guest/articles');
 
         $response->assertStatus(200)->assertJson(
@@ -99,7 +101,8 @@ class PermissionsTest extends TestCase
     /**
      * @test
      */
-    public function guestsCannotViewArticleIndex() {
+    public function guestsCannotViewArticleIndex()
+    {
         $response = $this->json('GET', 'api/articles');
 
         $response->assertStatus(401)->assertExactJson(
@@ -110,7 +113,8 @@ class PermissionsTest extends TestCase
      /**
       * @test
       */
-    public function guestsCanViewPublishedArticles() {
+    public function guestsCanViewPublishedArticles()
+    {
         $this->assertEquals($this->articleWriter1->fresh()->status, 1);
         $response = $this->json('GET', "api/guest/articles/{$this->articleWriter1->id}");
 
@@ -122,7 +126,8 @@ class PermissionsTest extends TestCase
     /**
      * @test
      */
-    public function guestsCannotViewUnpublishedArticles() {
+    public function guestsCannotViewUnpublishedArticles()
+    {
         $this->assertEquals($this->articleWriter2->fresh()->status, 0);
         $response = $this->json('GET', "api/guest/articles/{$this->articleWriter2->id}");
 
@@ -134,7 +139,8 @@ class PermissionsTest extends TestCase
     /**
      * @test
      */
-    public function writersAndEditorsCanViewPostsIndex() {
+    public function writersAndEditorsCanViewPostsIndex()
+    {
         $response = $this->actingAs($this->writer1)->json('GET', 'api/articles');
 
         $response->assertStatus(200)->assertJson(
@@ -147,7 +153,8 @@ class PermissionsTest extends TestCase
     /**
      * @test
      */
-    public function writersCannotPublishOrUnpublishArticles() {
+    public function writersCannotPublishOrUnpublishArticles()
+    {
         // Publish
         $this->assertEquals($this->articleWriter2->fresh()->status, 0);
         $response = $this->actingAs($this->writer1)->json('PATCH', "api/articles/{$this->articleWriter1->id}", ['status' => 1]);
@@ -164,7 +171,8 @@ class PermissionsTest extends TestCase
     /**
      * @test
      */
-    public function writersCanEditTheirUnpublishedArticles() {
+    public function writersCanEditTheirUnpublishedArticles()
+    {
         $this->assertEquals($this->articleWriter2->fresh()->status, 0);
         $response = $this->actingAs($this->writer2)->json('PATCH', "api/articles/{$this->articleWriter2->id}", ['title' => 'Modified title']);
         $response->assertStatus(200);
@@ -174,7 +182,8 @@ class PermissionsTest extends TestCase
     /**
      * @test
      */
-    public function writersCannotEditTheirPublishedArticles() {
+    public function writersCannotEditTheirPublishedArticles()
+    {
         $this->assertEquals($this->articleWriter1->fresh()->status, 1);
         $previousTitle = $this->articleWriter1->fresh()->title;
         $response      = $this->actingAs($this->writer1)->json('PATCH', "api/articles/{$this->articleWriter1->id}", ['title' => 'Modified title']);
@@ -185,7 +194,8 @@ class PermissionsTest extends TestCase
     /**
      * @test
      */
-    public function editorsCanPublishOrUnpublishWritersArticles() {
+    public function editorsCanPublishOrUnpublishWritersArticles()
+    {
         // Publish
         $this->assertEquals($this->articleWriter2->fresh()->status, 0);
         $response = $this->actingAs($this->editor1)->json('PATCH', "api/articles/{$this->articleWriter2->id}", ['status' => 1]);
@@ -202,7 +212,8 @@ class PermissionsTest extends TestCase
     /**
      * @test
      */
-    public function editorsCannotPublishOrUnpublishOtherEditorsArticles() {
+    public function editorsCannotPublishOrUnpublishOtherEditorsArticles()
+    {
         // Publish
         $this->assertEquals($this->articleEditor2->fresh()->status, 0);
         $response = $this->actingAs($this->editor1)->json('PATCH', "api/articles/{$this->articleEditor2->id}", ['status' => 1]);
@@ -219,7 +230,8 @@ class PermissionsTest extends TestCase
     /**
      * @test
      */
-    public function editorsCanPublishOrUnpublishTheirOwnArticles() {
+    public function editorsCanPublishOrUnpublishTheirOwnArticles()
+    {
         // Publish
         $this->assertEquals($this->articleEditor2->fresh()->status, 0);
         $response = $this->actingAs($this->editor2)->json('PATCH', "api/articles/{$this->articleEditor2->id}", ['status' => 1]);

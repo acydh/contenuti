@@ -1,20 +1,23 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Http\Requests\Article\Update as UpdateRequest;
 use App\Http\Requests\Article\Create as CreateRequest;
 use App\Http\Resources\ArticleResource;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Arr;
+
 class ArticleController extends Controller
 {
     /**
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         $categoryId = $request->input('categoryId');
         $articles   = Article::when(
             $categoryId,
@@ -29,7 +32,8 @@ class ArticleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function indexGuest(Request $request) {
+    public function indexGuest(Request $request)
+    {
         $categoryId = $request->input('categoryId');
 
         $articles = Article::with(['author', 'category'])->where('status', 1)->when(
@@ -45,7 +49,8 @@ class ArticleController extends Controller
      * @param  App\Http\Requests\Article\Create  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateRequest $request) {
+    public function store(CreateRequest $request)
+    {
         $data    = $request->validated();
         $article = Article::make($data);
 
@@ -57,7 +62,8 @@ class ArticleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id) {
+    public function show($id)
+    {
         return new ArticleResource(Article::findOrFail($id));
     }
 
@@ -65,7 +71,8 @@ class ArticleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function showGuest($id) {
+    public function showGuest($id)
+    {
         $article = Article::findOrFail($id);
 
         if ($article->isPublished === false) {
@@ -80,7 +87,8 @@ class ArticleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateRequest $request, $id) {
+    public function update(UpdateRequest $request, $id)
+    {
         $data = $request->validated();
 
         $isPublishRequest = Arr::exists($data, 'status');
@@ -102,6 +110,7 @@ class ArticleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) {
+    public function destroy($id)
+    {
     }
 }

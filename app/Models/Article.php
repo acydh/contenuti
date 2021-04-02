@@ -14,20 +14,25 @@ class Article extends Model
      * @var array
      */
     protected $fillable = [
+        'author_id',
         'title',
         'abstract',
         'contents',
+        'category_id',
+        'status'
     ];
 
     /**
      * Relationships
      */
 
-    public function author() {
+    public function author()
+    {
         return $this->belongsTo(User::class, 'author_id');
     }
 
-    public function category() {
+    public function category()
+    {
         return $this->belongsTo(Category::class, 'category_id');
     }
 
@@ -35,7 +40,13 @@ class Article extends Model
      * Model accessors
      */
 
-    public function getIsPublishedAttribute() {
+    public function getIsPublishedAttribute()
+    {
         return $this->status == 1;
+    }
+
+    public function scopePublished($query)
+    {
+        return $query->where('status', 1)->paginate(6);
     }
 }

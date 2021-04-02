@@ -17,7 +17,8 @@ class ArticlePolicy
      * @param  \App\Models\Article  $article
      * @return mixed
      */
-    public function update(User $user, Article $article, bool $isPublishRequest) {
+    public function update(User $user, Article $article, bool $isPublishRequest = false)
+    {
         $author = $article->author;
 
         if ($user->isEditor === true) {
@@ -47,7 +48,8 @@ class ArticlePolicy
      * @param  \App\Models\User  $user
      * @return mixed
      */
-    public function viewAny(User $user) {
+    public function viewAny(User $user)
+    {
     }
 
     /**
@@ -57,7 +59,8 @@ class ArticlePolicy
      * @param  \App\Models\Article  $article
      * @return mixed
      */
-    public function view(User $user, Article $article) {
+    public function view(User $user, Article $article)
+    {
     }
 
     /**
@@ -66,7 +69,8 @@ class ArticlePolicy
      * @param  \App\Models\User  $user
      * @return mixed
      */
-    public function create(User $user) {
+    public function create(User $user)
+    {
     }
 
     /**
@@ -76,7 +80,8 @@ class ArticlePolicy
      * @param  \App\Models\Article  $article
      * @return mixed
      */
-    public function delete(User $user, Article $article) {
+    public function delete(User $user, Article $article)
+    {
     }
 
     /**
@@ -86,7 +91,8 @@ class ArticlePolicy
      * @param  \App\Models\Article  $article
      * @return mixed
      */
-    public function restore(User $user, Article $article) {
+    public function restore(User $user, Article $article)
+    {
     }
 
     /**
@@ -96,6 +102,7 @@ class ArticlePolicy
      * @param  \App\Models\Article  $article
      * @return mixed
      */
-    public function forceDelete(User $user, Article $article) {
+    public function forceDelete(User $user, Article $article)
+    {
     }
 }

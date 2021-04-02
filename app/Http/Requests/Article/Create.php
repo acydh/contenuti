@@ -12,7 +12,8 @@ class Create extends FormRequest
      *
      * @return bool
      */
-    public function authorize() {
+    public function authorize()
+    {
         return true;
     }
 
@@ -21,7 +22,8 @@ class Create extends FormRequest
      *
      * @return array
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             'title'    => [
                 'required',
@@ -29,6 +31,7 @@ class Create extends FormRequest
             ],
             'abstract' => 'required|string|max:255',
             'contents' => 'required|string|max:500',
+            'category_id' => 'required|exists:categories,id',
             'status'   => [
                 'nullable',
                 'sometimes',

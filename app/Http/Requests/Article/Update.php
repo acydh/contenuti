@@ -29,10 +29,11 @@ class Update extends FormRequest
             'nullable',
             'sometimes',
             'max:100',
-            Rule::unique('articles')
+            Rule::unique('articles')->ignore($this->article)
           ],
           'abstract' => 'nullable|sometimes|string|max:255',
-          'contents' => 'nullable|sometimes|string|max:500',
+          'contents' => 'nullable|sometimes|string|min:100|max:500',
+          'category_id' => 'required|exists:categories,id',
           'status' => [
             'nullable',
             'sometimes',

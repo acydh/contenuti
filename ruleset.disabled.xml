@@ -44,7 +44,7 @@
     <exclude name="Squiz.PHP.DisallowInlineIf" />
 
     <!-- Disable empty line before the closing brace of a function -->
-    <exclude name="Squiz.WhiteSpace.FunctionClosingBraceSpace" />
+    <!-- <exclude name="Squiz.WhiteSpace.FunctionClosingBraceSpace" /> -->
   </rule>
 
   <!-- Incremenet limit for line length warning and error -->

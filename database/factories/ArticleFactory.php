@@ -20,15 +20,18 @@ class ArticleFactory extends Factory
      *
      * @return array
      */
-    public function definition() {
+    public function definition()
+    {
         // get all the available category ids
         $categoryIds = Category::all()->pluck('id');
+        $statuses = [0, 1];
 
         return [
             'title'       => $this->faker->sentence,
             'abstract'    => $this->faker->text(100),
             'contents'    => $this->faker->text(500),
             'category_id' => $this->faker->randomElement($categoryIds),
+            'status'      => $this->faker->randomElement($statuses),
         ];
     }
 }
