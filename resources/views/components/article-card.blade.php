@@ -3,6 +3,7 @@
 		<div class="py-4 px-8 mt-3">
 			<div class="flex flex-col mb-8">
 				<h2 class="text-gray-700 font-semibold text-2xl tracking-wide mb-2">{{ $article->title }}</h2>
+				<p class="text-gray-500 mb-4 text-sm">{{ $article->author->id === optional(Auth::user())->id ? "You" : $article->author->name }} - {{ $article->created_at->diffForHumans() }}</p>
 				<p class="text-gray-500 text-base">{{ $article->abstract }}</p>
 			</div>
 			<div class="py-4">
