@@ -32,6 +32,7 @@ class ArticleFactory extends Factory
             'contents'    => $this->faker->text(500),
             'category_id' => $this->faker->randomElement($categoryIds),
             'status'      => $this->faker->randomElement($statuses),
+            'created_at'  => $this->faker->unique()->dateTimeThisYear()
         ];
     }
 }

@@ -46,7 +46,7 @@
 
     <div class="flex p-1">
         @if(Auth::user()->isEditor)
-          <select class="border-2 border-gray-300 border-r mr-2 p-2" name="status">
+          <select wire:model.lazy="status" class="border-2 border-gray-300 border-r mr-2 p-2" name="status">
               <option value="0">Save Draft</option>
               <option value="1">Save and Publish</option>
           </select>
