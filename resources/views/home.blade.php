@@ -2,9 +2,11 @@
     <div class="container my-10 sm:px-20">
       <livewire:category-search-bar/>
         <div class="grid grid-cols-3">
-            @foreach ($articles as $article)
+            @forelse ($articles as $article)
              <x-article-card :article="$article"></x-article-card>
-            @endforeach
+            @empty
+              <div><h3>No results</h3></div>
+            @endforelse
         </div>
         <div>{{ $articles->links() }}</div>
     </div>
